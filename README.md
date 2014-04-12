@@ -9,16 +9,16 @@
 
 ## Description
 
-FuelPHP‚ÌƒRƒ“ƒgƒ[ƒ‰[‚ÉŒŸõEƒy[ƒWƒ“ƒO‹@”\‚ğ’ñ‹Ÿ‚µ‚Ü‚·B
+FuelPHPã®ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼ã«æ¤œç´¢ãƒ»ãƒšãƒ¼ã‚¸ãƒ³ã‚°æ©Ÿèƒ½ã‚’æä¾›ã—ã¾ã™ã€‚
 
 ## Usage
 
-* git clone git@github.com:goosys/Fuel-Package-TraitPagination.git fuel/packages/trait-pagination
+* git clone https://github.com/goosys/Fuel-Package-TraitPagination.git fuel/packages/trait-pagination
 * vi fuel/app/config.php
 
-	always_load => 
-		packages => 'trait-pagination'
-		language => 'trait-pagination'
+		always_load => 
+			packages => 'trait-pagination',
+			language => 'trait-pagination'
 
 
 
@@ -28,43 +28,43 @@ FuelPHP‚ÌƒRƒ“ƒgƒ[ƒ‰[‚ÉŒŸõEƒy[ƒWƒ“ƒO‹@”\‚ğ’ñ‹Ÿ‚µ‚Ü‚·B
 	
 	class Controller_Fruit extends Controller_Template{
 		
-		//‹@”\‚ğ’Ç‰Á
+		//æ©Ÿèƒ½ã‚’è¿½åŠ 
 		use Trait_Pagination;
 		
-		//ƒŠƒXƒg•\¦—pƒAƒNƒVƒ‡ƒ“
+		//ãƒªã‚¹ãƒˆè¡¨ç¤ºç”¨ã‚¢ã‚¯ã‚·ãƒ§ãƒ³
 		public function action_index()
 		{
-			//ŒŸõŒ‹‰ÊŠi”[—p
+			//æ¤œç´¢çµæœæ ¼ç´ç”¨
 			$items = array(); 
 			
-			//ŒŸõ‘ÎÛƒtƒB[ƒ‹ƒh–¼
+			//æ¤œç´¢å¯¾è±¡ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰å
 			static::$keyword_fields = array('name','kana');
 			
-			//ŒŸõ‚ÌÀs
+			//æ¤œç´¢ã®å®Ÿè¡Œ
 			$data = $this->run_search(
-				//ŒŸõŒ‹‰Ê”‚ğ”‚¦‚éƒNƒGƒŠ
+				//æ¤œç´¢çµæœæ•°ã‚’æ•°ãˆã‚‹ã‚¯ã‚¨ãƒª
 				function($options){
 					return Model_Fruit::count($options);
 				},
-				//ŒŸõ‚ğs‚¤ƒNƒGƒŠ
+				//æ¤œç´¢ã‚’è¡Œã†ã‚¯ã‚¨ãƒª
 				function($options){
 					return Model_Fruit::find('all',$options);
 				}
-				//Fuel::Core::Pagination‚Ìconfig
+				//Fuel::Core::Paginationã®config
 				,array(
-					//‚Pƒy[ƒW‚Ì•\¦Œ”
+					//ï¼‘ãƒšãƒ¼ã‚¸ã®è¡¨ç¤ºä»¶æ•°
 					'per_page' => 2,
-					//ƒy[ƒW”w’è—pƒZƒOƒƒ“ƒg
+					//ãƒšãƒ¼ã‚¸æ•°æŒ‡å®šç”¨ã‚»ã‚°ãƒ¡ãƒ³ãƒˆ
 					//'uri_segment'=>'p',
 				)
 			);
 			
-			//ŒŸõ¸”s‚Ì‘JˆÚiƒy[ƒW”Ô†‚ªŒ—ŠO‚Ìê‡‚È‚Çj
+			//æ¤œç´¢å¤±æ•—æ™‚ã®é·ç§»ï¼ˆãƒšãƒ¼ã‚¸ç•ªå·ãŒåœå¤–ã®å ´åˆãªã©ï¼‰
 			if( $data['status'] != 'ok' ){
 				throw new HttpNotFoundException;
 			}
 			
-			//Œ‹‰Ê‚ğ•`‰æ
+			//çµæœã‚’æç”»
 			$this->template->content = View::forge('fruit/index',$data);
 			$this->template->content->set_safe('pagination',$data['pagination']);
 		}
@@ -75,9 +75,9 @@ FuelPHP‚ÌƒRƒ“ƒgƒ[ƒ‰[‚ÉŒŸõEƒy[ƒWƒ“ƒO‹@”\‚ğ’ñ‹Ÿ‚µ‚Ü‚·B
 
 	<h2>List Fruits</h2>
 	<br>
-	<!-- "ukeywordv‚ÌŒŸõŒ‹‰Ê" -->
+	<!-- "ã€Œkeywordã€ã®æ¤œç´¢çµæœ" -->
 	<?php render('include/search_params',array('params'=>$params)); if( View::get('keyword') ){ echo View::get('keyword'); } ?>
-	<!-- ŒŸõƒ{ƒbƒNƒX‚ğ•\¦ -->
+	<!-- æ¤œç´¢ãƒœãƒƒã‚¯ã‚¹ã‚’è¡¨ç¤º -->
 	<?php echo render('include/search_box',array('params'=>$params)); ?>
 	<?php if ($items): ?>
 	<table class="table table-striped">
@@ -88,7 +88,7 @@ FuelPHP‚ÌƒRƒ“ƒgƒ[ƒ‰[‚ÉŒŸõEƒy[ƒWƒ“ƒO‹@”\‚ğ’ñ‹Ÿ‚µ‚Ü‚·B
 			</tr>
 		</thead>
 		<tbody>
-		<!-- ŒŸõŒ‹‰Ê‚ğ•\¦ -->
+		<!-- æ¤œç´¢çµæœã‚’è¡¨ç¤º -->
 		<?php foreach ($items as $item): ?>
 			<tr>
 				<th><?php echo $item->id; ?></th>
@@ -98,7 +98,7 @@ FuelPHP‚ÌƒRƒ“ƒgƒ[ƒ‰[‚ÉŒŸõEƒy[ƒWƒ“ƒO‹@”\‚ğ’ñ‹Ÿ‚µ‚Ü‚·B
 		</tbody>
 	</table>
 
-	<!-- ƒy[ƒWƒƒ[‚ğ•\¦ -->
+	<!-- ãƒšãƒ¼ã‚¸ãƒ£ãƒ¼ã‚’è¡¨ç¤º -->
 	<?php if( isset($pagination) && $pagination ){ echo $pagination; }?>
 	<?php else: ?>
 	<p>No Fruits</p>
@@ -109,36 +109,36 @@ FuelPHP‚ÌƒRƒ“ƒgƒ[ƒ‰[‚ÉŒŸõEƒy[ƒWƒ“ƒO‹@”\‚ğ’ñ‹Ÿ‚µ‚Ü‚·B
 
 ### Controller
 
-* static::$keyword_fields = array('name'); //ŒŸõ‘ÎÛƒtƒB[ƒ‹ƒh–¼
-* static::$keyword_param = 'keyword'; //ŒŸõƒL[ƒ[ƒh‚ÌURLƒpƒ‰ƒ[ƒ^[–¼ (&keyword=)
-* static::$filter_param  = 'filter'; //“¯ƒtƒBƒ‹ƒ^[i–¢À‘•j
-* static::$sort_param    = 'sort';//“¯ƒ\[ƒgi–¢À‘•j
-* static::$default_sort_key = 'id'; //ƒfƒtƒHƒ‹ƒg‚Ìƒ\[ƒgƒtƒB[ƒ‹ƒh
+* static::$keyword_fields = array('name'); //æ¤œç´¢å¯¾è±¡ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰å
+* static::$keyword_param = 'keyword'; //æ¤œç´¢ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰ã®URLãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ãƒ¼å (&keyword=)
+* static::$filter_param  = 'filter'; //åŒãƒ•ã‚£ãƒ«ã‚¿ãƒ¼ï¼ˆæœªå®Ÿè£…ï¼‰
+* static::$sort_param    = 'sort';//åŒã‚½ãƒ¼ãƒˆï¼ˆæœªå®Ÿè£…ï¼‰
+* static::$default_sort_key = 'id'; //ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®ã‚½ãƒ¼ãƒˆãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰
 
 ### View
 
-* ŒŸõƒ{ƒbƒNƒX‚ğƒJƒXƒ^ƒ}ƒCƒY
+* æ¤œç´¢ãƒœãƒƒã‚¯ã‚¹ã‚’ã‚«ã‚¹ã‚¿ãƒã‚¤ã‚º
     cp fuel/packages/trait-pagination/views/search_box.php fuel/app/views/
 
-* ŒŸõƒ{ƒbƒNƒX“à‚ÌƒeƒLƒXƒg‚ğƒJƒXƒ^ƒ}ƒCƒY
+* æ¤œç´¢ãƒœãƒƒã‚¯ã‚¹å†…ã®ãƒ†ã‚­ã‚¹ãƒˆã‚’ã‚«ã‚¹ã‚¿ãƒã‚¤ã‚º
     cp fuel/packages/trait-pagination/lang/ja/trait-pagination.php fuel/app/lang/ja/
 
 ## More Customize
 
-### ŒŸõ‚Ìˆê’vğŒ‚ğ•ÏX
+### æ¤œç´¢ã®ä¸€è‡´æ¡ä»¶ã‚’å¤‰æ›´
 
 	/**
-	 * ŒŸõ•û–@‚Ìw’è
+	 * æ¤œç´¢æ–¹æ³•ã®æŒ‡å®š
 	 */
 	protected static function keyword_expr( $field, $word )
 	{ 
-		//Š®‘Sˆê’v
+		//å®Œå…¨ä¸€è‡´
 		//return array( $field, '=', $word ); 
-		//‘O•ûˆê’v
+		//å‰æ–¹ä¸€è‡´
 		//return array( $field, 'like', '%'.$word ); 
-		//Œã•ûˆê’v
+		//å¾Œæ–¹ä¸€è‡´
 		//return array( $field, 'like', $word.'%' ); 
-		//’†ŠÔˆê’v
+		//ä¸­é–“ä¸€è‡´
 		//return array( $field, 'like', '%'.$word.'%' ); 
 	}
 
